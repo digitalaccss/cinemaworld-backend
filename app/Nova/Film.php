@@ -237,7 +237,10 @@ class Film extends Resource
             // cast
             BelongsToMany::make('Cast', 'cast'),
             // tags
-            BelongsToMany::make('Tags', 'tags')->nullable()
+            BelongsToMany::make('Tags', 'tags')->nullable(),
+            // Meta
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable(),   
         ];
     }
 

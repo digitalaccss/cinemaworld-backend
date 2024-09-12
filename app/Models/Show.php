@@ -71,7 +71,9 @@ class Show extends Model implements HasMedia
     'is_publish',
     'is_new',
     'on_demand',
-    'sub_title'
+    'sub_title',
+    'meta_title', 
+    'meta_description'
 ];
 
     // public function test($value){
