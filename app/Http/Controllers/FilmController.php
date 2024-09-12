@@ -116,7 +116,7 @@ class FilmController extends Controller
     }
 
     public function getFilm(Request $req){
-        $film = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date')
+        $film = Show::select('id', 'title', 'foreign_title', 'slug',  'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date',  'meta_title', 'meta_description')
         ->where('show_type_id', 1)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -141,7 +141,9 @@ class FilmController extends Controller
             $data['director_statement'] = $film->director_statement;
             $data['is_new'] = $film->is_new;
             $data['on_demand'] = $film->on_demand;
-            
+            $data['meta_title'] = $film->meta_title;
+            $data['meta_description'] = $film->meta_description;
+
             $genreIDs = ShowGenre::where('show_id', $film->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
                 $genres = Genre::select('genre_name', 'genre_display_name')->whereIn('id', $genreIDs)->get();
