@@ -118,7 +118,7 @@ class ShortController extends Controller
     }
 
     public function getShort(Request $req){
-        $short = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date')
+        $short = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
         ->where('show_type_id', 4)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -143,7 +143,9 @@ class ShortController extends Controller
             $data['director_statement'] = $short->director_statement;
             $data['is_new'] = $short->is_new;
             $data['on_demand'] = $short->on_demand;
-            
+            $data['meta_title'] = $short->meta_title;
+            $data['meta_description'] = $short->meta_description;
+
             $genreIDs = ShowGenre::where('show_id', $short->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
                 $genres = Genre::select('genre_name', 'genre_display_name')->whereIn('id', $genreIDs)->get();

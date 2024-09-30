@@ -116,7 +116,7 @@ class DocufilmController extends Controller
     }
 
     public function getDocuFilm(Request $req){
-        $docuFilm = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date')
+        $docuFilm = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
         ->where('show_type_id', 3)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -141,6 +141,8 @@ class DocufilmController extends Controller
             $data['director_statement'] = $docuFilm->director_statement;
             $data['is_new'] = $docuFilm->is_new;
             $data['on_demand'] = $docuFilm->on_demand;
+            $data['meta_title'] = $docuFilm->meta_title;
+            $data['meta_description'] = $docuFilm->meta_description;
             
             $genreIDs = ShowGenre::where('show_id', $docuFilm->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){

@@ -28,7 +28,8 @@ class CastController extends Controller
             // $data['slug'] = $cast->slug;
             $data['title'] = 'Cast';
             $data['description'] = $cast->description;
-
+            $data['meta_title'] = $cast->meta_title;
+            $data['meta_description'] = $cast->meta_description;
             if($cast->profile_photo_path){
                 if(Storage::disk('public')->exists($cast->profile_photo_path)){
                     $data['profile_photo_path'] = Storage::url($cast->profile_photo_path);

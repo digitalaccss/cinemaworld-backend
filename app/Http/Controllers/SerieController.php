@@ -109,7 +109,7 @@ class SerieController extends Controller
     }
 
     public function getSeries(Request $req){
-        $series = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'short_desc', 'full_desc', 'trivia_desc', 'director_statement', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'trailer_link_url', 'sub_title')
+        $series = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'short_desc', 'full_desc', 'trivia_desc', 'director_statement', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'trailer_link_url', 'sub_title', 'meta_title', 'meta_description')
         ->where('show_type_id', 2)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -130,8 +130,9 @@ class SerieController extends Controller
             $data['trivia_desc'] = $series->trivia_desc;
             $data['director_statement'] = $series->director_statement;
             $data['is_new'] = $series->is_new;
+            $data['meta_title'] = $series->meta_title; 
+            $data['meta_description'] = $series->meta_description;
             $data['on_demand'] = $series->on_demand;
-
             $genreIDs = ShowGenre::where('show_id', $series->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
                 $genres = Genre::select('genre_name', 'genre_display_name')->whereIn('id', $genreIDs)->get();
@@ -238,7 +239,7 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalments = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'full_desc', 'short_desc', 'trailer_link_url', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date')
+            $instalments = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'full_desc', 'short_desc', 'trailer_link_url', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
             ->where('series_id', $series->id)
             ->where('is_publish', true)
             ->orderBy('instalment_number', 'ASC')
@@ -329,7 +330,7 @@ class SerieController extends Controller
     }
 
     public function getSeriesInstalment(Request $req){
-        $series = Show::select('id', 'title', 'foreign_title', 'show_type_id', 'is_new', 'on_demand', 'short_desc', 'full_desc', 'sub_title')
+        $series = Show::select('id', 'title', 'foreign_title', 'show_type_id', 'is_new', 'on_demand', 'short_desc', 'full_desc', 'sub_title', 'meta_title', 'meta_description')
         ->where('show_type_id', 2)
         ->where('slug', $req->seriesSlug)
         ->where('is_publish', true)
@@ -396,7 +397,7 @@ class SerieController extends Controller
             if($genreIDs){
                 $showsWithSameGenres = ShowGenre::whereIn('genre_id', $genreIDs)->pluck('show_id');
                 if(count($showsWithSameGenres) >= 1){
-                    $youMayAlsoLikes = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'is_publish', 'sub_title')
+                    $youMayAlsoLikes = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'is_publish', 'sub_title', 'meta_title', 'meta_description')
                     ->where('show_type_id', 2)
                     ->whereNot('id', $series->id)
                     ->where('is_publish', true)
@@ -428,7 +429,7 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalment = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'banner_path', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date')
+            $instalment = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'banner_path', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
             ->where('series_id', $series->id)
             ->where('slug', $req->slug)
             ->where('is_publish', true)
@@ -452,7 +453,8 @@ class SerieController extends Controller
                 $data['instalment']['trailer_link_url'] = $instalment->trailer_link_url;
                 $data['instalment']['is_new'] = $instalment->is_new;
                 $data['instalment']['on_demand'] = $instalment->on_demand;
-
+                $data['instalment']['meta_title'] = $instalment->meta_title;
+                $data['instalment']['meta_description'] = $instalment->meta_description;
                 $instalmentDirectorIDs = InstalmentDirector::where('instalment_id', $instalment->id)->pluck('director_id');
                 if(count($instalmentDirectorIDs) >= 1){
                     $instalmentDirectorArr = [];
