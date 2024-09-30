@@ -179,6 +179,9 @@ class Serie extends Resource
             BelongsToMany::make('Accolades', 'accolades'),
             // critics
             HasMany::make('Critics', 'critics'),
+            
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable(),   
             // directors
             // BelongsToMany::make('Directors', 'directors'),
             // cast

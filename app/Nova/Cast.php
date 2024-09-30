@@ -79,6 +79,8 @@ class Cast extends Resource
                 $timestamp = strtotime($dateTimeStr);
                 return date("Y-m-d H:i:s", $timestamp);
             })->sortable()->onlyOnIndex(),
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable(),   
         ];
     }
 

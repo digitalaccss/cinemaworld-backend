@@ -220,6 +220,8 @@ class Instalment extends Resource
             BelongsToMany::make('Directors', 'directors'),
             // cast
             BelongsToMany::make('Cast', 'cast'),
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable(),   
         ];
     }
 
