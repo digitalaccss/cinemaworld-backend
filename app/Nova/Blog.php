@@ -108,6 +108,8 @@ class Blog extends Resource
             // is archived?
             //Boolean::make('Archive This?', 'is_archived'),
             //DateTime::make('Published At', 'created_at'),
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable(),   
         ];
     }
 

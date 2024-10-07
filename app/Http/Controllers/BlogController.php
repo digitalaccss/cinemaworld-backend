@@ -35,7 +35,7 @@ class BlogController extends Controller
             }
         }
 
-        $blogs = $blogModel->select('id', 'title', 'slug', 'blog_type_id', 'cover_photo_path', 'created_at')->orderBy('created_at', 'desc')->get();
+        $blogs = $blogModel->select('id', 'title', 'slug', 'blog_type_id', 'cover_photo_path', 'created_at', 'meta_title', 'meta_description')->orderBy('created_at', 'desc')->get();
 
         if(count($blogs) >= 1){
             $data = [];
@@ -45,7 +45,8 @@ class BlogController extends Controller
                 $data[$indexPos]['title'] = $blog->title;
                 $data[$indexPos]['slug'] = '/blogs/'.$blog->slug;
                 $data[$indexPos]['blog_type'] = BlogType::where('id', $blog->blog_type_id)->value('blog_type');
-                
+                $data['meta_title'] = $blog->meta_title;
+                $data['meta_description'] = $blog->meta_description;
                 if($blog->cover_photo_path){
                     if(Storage::disk('public')->exists($blog->cover_photo_path)){
                         $blog->cover_photo_path = Storage::url($blog->cover_photo_path);
@@ -68,7 +69,7 @@ class BlogController extends Controller
     }
 
     public function getBlog(Request $req){
-        $blog = Blog::select('id', 'title', 'slogan', 'slug', 'blog_type_id', 'content', 'facebook_link_url', 'banner_path', 'created_at', 'description')
+        $blog = Blog::select('id', 'title', 'slogan', 'slug', 'blog_type_id', 'content', 'facebook_link_url', 'banner_path', 'created_at', 'description', 'meta_title', 'meta_description')
         ->where('slug', $req->slug)
         ->first();
 
@@ -83,7 +84,8 @@ class BlogController extends Controller
             $data['content'] = $blog->content;
             $data['facebook_link_url'] = $blog->facebook_link_url;
             $data['description'] = $blog->description;
-
+            $data['meta_title'] = $blog->meta_title;
+            $data['meta_description'] = $blog->meta_description;
             if($blog->banner_path){
                 if(Storage::disk('public')->exists($blog->banner_path)){
                     $blog->banner_path = Storage::url($blog->banner_path);
