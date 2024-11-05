@@ -73,7 +73,11 @@ class Show extends Model implements HasMedia
     'on_demand',
     'sub_title',
     'meta_title', 
-    'meta_description'
+    'meta_description',
+    'director_statement_alt',
+    'tonight_banner_alt',
+    'banner_alt',
+    'image_alt'
 ];
 
     // public function test($value){

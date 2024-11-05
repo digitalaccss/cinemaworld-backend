@@ -116,7 +116,7 @@ class FilmController extends Controller
     }
 
     public function getFilm(Request $req){
-        $film = Show::select('id', 'title', 'foreign_title', 'slug',  'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date',  'meta_title', 'meta_description')
+        $film = Show::select('id', 'title', 'foreign_title', 'slug',  'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date',  'meta_title', 'meta_description',  'director_statement_alt', 'tonight_banner_alt', 'banner_alt', 'image_alt')
         ->where('show_type_id', 1)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -143,6 +143,10 @@ class FilmController extends Controller
             $data['on_demand'] = $film->on_demand;
             $data['meta_title'] = $film->meta_title;
             $data['meta_description'] = $film->meta_description;
+            $data['director_statement_alt'] = $film->director_statement_alt;
+            $data['tonight_banner_alt'] = $film->tonight_banner_alt;
+            $data['banner_alt'] = $film->banner_alt;
+            $data['image_alt'] = $film->image_alt;
 
             $genreIDs = ShowGenre::where('show_id', $film->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
