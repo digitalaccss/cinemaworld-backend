@@ -15,7 +15,7 @@ use App\Models\Instalment;
 class CastController extends Controller
 {
     public function getCast(Request $req){
-        $cast = Cast::select('id', 'name', 'slug', 'description', 'profile_photo_path')
+        $cast = Cast::select('id', 'name', 'slug', 'description', 'profile_photo_path', 'profile_photo_alt')
         ->where('slug', $req->slug)
         ->first();
 
@@ -30,7 +30,7 @@ class CastController extends Controller
             $data['description'] = $cast->description;
             $data['meta_title'] = $cast->meta_title;
             $data['meta_description'] = $cast->meta_description;
-            $data['profile_photo_path'] = $cast->profile_photo_path;
+            $data['profile_photo_alt'] = $cast->profile_photo_alt;
             if($cast->profile_photo_path){
                 if(Storage::disk('public')->exists($cast->profile_photo_path)){
                     $data['profile_photo_path'] = Storage::url($cast->profile_photo_path);
@@ -42,7 +42,7 @@ class CastController extends Controller
 
             $showIDs = ShowCast::where('cast_id', $cast->id)->pluck('show_id');
             if(count($showIDs) >= 1){
-                $showsArr = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'profile_photo_path')
+                $showsArr = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'profile_photo_path' )
                 ->whereIn('id', $showIDs)
                 ->where('is_publish', true)
                 ->get();

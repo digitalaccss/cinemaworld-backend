@@ -168,7 +168,7 @@ class FilmController extends Controller
 
             $accoladeIDs = ShowAccolade::where('show_id', $film->id)->pluck('accolade_id');
             if(count($accoladeIDs) >= 1){
-                $accolades = Accolade::select('name', 'category', 'cover_photo_path')->whereIn('id', $accoladeIDs)->get();
+                $accolades = Accolade::select('name', 'category', 'cover_photo_path', 'cover_photo_alt')->whereIn('id', $accoladeIDs)->get();
                 foreach($accolades as $accolade){
                     if($accolade->cover_photo_path){
                         if(Storage::disk('public')->exists($accolade->cover_photo_path)){

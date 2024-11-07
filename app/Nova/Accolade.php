@@ -61,7 +61,8 @@ class Accolade extends Resource
                 return $newFileName;
             })
             ->prunable()
-            ->acceptedTypes('image/jpeg,image/png')
+            ->acceptedTypes('image/jpeg,image/png'),
+            Text::make('Cover Photo Alt', 'cover_photo_alt')->rules('max:255')->nullable()
         ];
     }
 
