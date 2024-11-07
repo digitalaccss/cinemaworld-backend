@@ -118,7 +118,7 @@ class ShortController extends Controller
     }
 
     public function getShort(Request $req){
-        $short = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
+        $short = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'director_statement_alt', 'tonight_banner_alt', 'banner_alt', 'image_alt')
         ->where('show_type_id', 4)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -145,6 +145,10 @@ class ShortController extends Controller
             $data['on_demand'] = $short->on_demand;
             $data['meta_title'] = $short->meta_title;
             $data['meta_description'] = $short->meta_description;
+            $data['image_alt'] = $short->image_alt;
+            $data['banner_alt'] = $short->banner_alt;
+            $data['director_statement_alt'] = $short->director_statement_alt;
+            $data['tonight_banner_alt'] = $short->tonight_banner_alt;
 
             $genreIDs = ShowGenre::where('show_id', $short->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
