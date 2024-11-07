@@ -30,6 +30,7 @@ class CastController extends Controller
             $data['description'] = $cast->description;
             $data['meta_title'] = $cast->meta_title;
             $data['meta_description'] = $cast->meta_description;
+            $data['profile_photo_path'] = $cast->profile_photo_path;
             if($cast->profile_photo_path){
                 if(Storage::disk('public')->exists($cast->profile_photo_path)){
                     $data['profile_photo_path'] = Storage::url($cast->profile_photo_path);
@@ -41,7 +42,7 @@ class CastController extends Controller
 
             $showIDs = ShowCast::where('cast_id', $cast->id)->pluck('show_id');
             if(count($showIDs) >= 1){
-                $showsArr = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new')
+                $showsArr = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'profile_photo_path')
                 ->whereIn('id', $showIDs)
                 ->where('is_publish', true)
                 ->get();

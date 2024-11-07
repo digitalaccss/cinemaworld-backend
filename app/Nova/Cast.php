@@ -74,7 +74,7 @@ class Cast extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Profile Photo Alt', 'profile_photo_alt')->rules('max:255')->nullable(),
             Text::make('Created At', 'created_at', function($dateTimeStr){
                 $timestamp = strtotime($dateTimeStr);
                 return date("Y-m-d H:i:s", $timestamp);
