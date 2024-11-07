@@ -1,5 +1,16 @@
+# Ignore dependencies
 /vendor/
 node_modules/
+
+# Ignore logs
 npm-debug.log
 yarn-error.log
+
+# Ignore testing folder
 testing
+
+# Ignore all files in public/vendor directory
+public/vendor/
+
+# Ignore Composer files
+composer.json
