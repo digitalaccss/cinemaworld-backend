@@ -137,7 +137,7 @@ class Instalment extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Cover Photo Alt', 'cover_photo_alt')->rules('max:255')->nullable(),
             // banner
             Image::make('Banner (1920px x 1080px)', 'banner_path')
             ->squared()
@@ -155,7 +155,7 @@ class Instalment extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Banner Alt', 'banner_alt')->rules('max:255')->nullable(),
             // photo gallery
             Images::make('Photo Gallery (540px x 300px)', 'instalment-gallery-collection')
             ->croppable(false)
@@ -211,7 +211,7 @@ class Instalment extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Tonight Banner Alt', 'tonight_banner_alt')->rules('max:255')->nullable(),
             // languages
             BelongsToMany::make('Languages', 'languages'),
             // schedules

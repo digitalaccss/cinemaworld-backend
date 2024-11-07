@@ -109,7 +109,7 @@ class SerieController extends Controller
     }
 
     public function getSeries(Request $req){
-        $series = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'short_desc', 'full_desc', 'trivia_desc', 'director_statement', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'trailer_link_url', 'sub_title', 'meta_title', 'meta_description')
+        $series = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'short_desc', 'full_desc', 'trivia_desc', 'director_statement', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'trailer_link_url', 'sub_title', 'meta_title', 'meta_description', 'cover_photo_alt', 'director_statement_alt', 'tonight_banner_alt')
         ->where('show_type_id', 2)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -133,6 +133,9 @@ class SerieController extends Controller
             $data['meta_title'] = $series->meta_title; 
             $data['meta_description'] = $series->meta_description;
             $data['on_demand'] = $series->on_demand;
+            $data['cover_photo_alt'] = $series->cover_photo_alt;
+            $data['director_statement_alt'] = $series->director_statement_alt;
+            $data['tonight_banner_alt'] = $series->tonight_banner_alt;
             $genreIDs = ShowGenre::where('show_id', $series->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){
                 $genres = Genre::select('genre_name', 'genre_display_name')->whereIn('id', $genreIDs)->get();
@@ -239,12 +242,12 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalments = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'full_desc', 'short_desc', 'trailer_link_url', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
+            $instalments = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'full_desc', 'short_desc', 'trailer_link_url', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'cover_photo_alt', 'banner_alt', 'tonight_banner_alt')
             ->where('series_id', $series->id)
             ->where('is_publish', true)
             ->orderBy('instalment_number', 'ASC')
             ->get();
-
+    
             if(count($instalments) >= 1){
                 foreach($instalments as $instalment){
 
@@ -429,7 +432,7 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalment = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'banner_path', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
+            $instalment = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'banner_path', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'cover_photo_alt', 'banner_alt', 'tonight_banner_alt')
             ->where('series_id', $series->id)
             ->where('slug', $req->slug)
             ->where('is_publish', true)
@@ -455,6 +458,9 @@ class SerieController extends Controller
                 $data['instalment']['on_demand'] = $instalment->on_demand;
                 $data['instalment']['meta_title'] = $instalment->meta_title;
                 $data['instalment']['meta_description'] = $instalment->meta_description;
+                $data['instalment']['cover_photo_alt'] = $instalment->cover_photo_alt;
+                $data['instalment']['banner_alt'] = $instalment->banner_alt;
+                $data['instalment']['tonight_banner_alt'] = $instalment->tonight_banner_alt;
                 $instalmentDirectorIDs = InstalmentDirector::where('instalment_id', $instalment->id)->pluck('director_id');
                 if(count($instalmentDirectorIDs) >= 1){
                     $instalmentDirectorArr = [];
