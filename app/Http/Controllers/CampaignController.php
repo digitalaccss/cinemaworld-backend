@@ -13,7 +13,7 @@ use App\Models\Campaign;
 class CampaignController extends Controller
 {
     public function getAllCampaigns(Request $req){
-        $campaigns = Campaign::select('id', 'title', 'slogan', 'slug', 'content', 'facebook_link_url', 'banner_path', 'carousel_id')
+        $campaigns = Campaign::select('id', 'title', 'slogan', 'slug', 'content', 'facebook_link_url', 'banner_path', 'carousel_id', 'banner_alt')
         ->get();
 
         if(count($campaigns) >= 1){
@@ -25,7 +25,7 @@ class CampaignController extends Controller
                 $data[$indexPos]['slug'] = '/campaigns/'.$campaign->slug;
                 $data[$indexPos]['content'] = $campaign->content;
                 $data[$indexPos]['facebook_link_url'] = $campaign->facebook_link_url;
-
+                $data[$indexPos]['banner_alt'] = $campaign->banner_alt;
                 if($campaign->banner_path){
                     if(Storage::disk('public')->exists($campaign->banner_path)){
                         $data['banner_path'] = Storage::url($campaign->banner_path);
@@ -86,7 +86,7 @@ class CampaignController extends Controller
     }
 
     public function getCampaign(Request $req){
-        $campaign = Campaign::select('id', 'title', 'slogan', 'slug', 'content', 'facebook_link_url', 'banner_path', 'carousel_id')
+        $campaign = Campaign::select('id', 'title', 'slogan', 'slug', 'content', 'facebook_link_url', 'banner_path', 'carousel_id', 'banner_alt')
         ->where('slug', $req->slug)
         ->first();
 
@@ -99,7 +99,7 @@ class CampaignController extends Controller
             $data['slug'] = '/campaigns/' . $campaign->slug;
             $data['content'] = $campaign->content;
             $data['facebook_link_url'] = $campaign->facebook_link_url;
-
+            $data['banner_alt'] = $campaign->banner_alt;
             if($campaign->banner_path){
                 if(Storage::disk('public')->exists($campaign->banner_path)){
                     $data['banner_path'] = Storage::url($campaign->banner_path);

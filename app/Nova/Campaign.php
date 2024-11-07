@@ -77,7 +77,7 @@ class Campaign extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-            
+            Text::make('Banner Alt', 'banner_alt')->rules('max:255')->nullable(),
             BelongsTo::make('Carousel', 'carousel')->rules('required'),
         ];
     }
