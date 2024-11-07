@@ -116,7 +116,7 @@ class DocufilmController extends Controller
     }
 
     public function getDocuFilm(Request $req){
-        $docuFilm = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description')
+        $docuFilm = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'director_statement', 'cover_photo_path', 'banner_path', 'director_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'director_statement_alt','banner_alt', 'cover_photo_alt', 'tonight_banner_alt')
         ->where('show_type_id', 3)
         ->where('slug', $req->slug)
         ->where('is_publish', true)
@@ -143,6 +143,11 @@ class DocufilmController extends Controller
             $data['on_demand'] = $docuFilm->on_demand;
             $data['meta_title'] = $docuFilm->meta_title;
             $data['meta_description'] = $docuFilm->meta_description;
+            $data['cover_photo_alt'] = $docuFilm->cover_photo_alt;
+            $data['banner_alt'] = $docuFilm->banner_alt;
+            $data['director_statement_alt'] = $docuFilm->director_statement_alt;
+            $data['tonight_banner_alt'] = $docuFilm->tonight_banner_alt;
+
             
             $genreIDs = ShowGenre::where('show_id', $docuFilm->id)->pluck('genre_id');
             if(count($genreIDs) >= 1){

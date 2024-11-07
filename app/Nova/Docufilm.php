@@ -115,7 +115,7 @@ class Docufilm extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Cover Photo Alt', 'cover_photo_alt')->rules('max:255')->nullable(),
             // banner
             Image::make('Banner (1920px x 1080px)', 'banner_path')
             ->squared()
@@ -133,6 +133,7 @@ class Docufilm extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
+            Text::make('Banner Alt', 'banner_alt')->rules('max:255')->nullable(),
             // photo gallery
             Images::make('Photo Gallery (540px x 300px)', 'docufilm-gallery-collection')
             ->croppable(false)
@@ -155,7 +156,7 @@ class Docufilm extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Director Statement Alt', 'director_statement_alt')->rules('max:255')->nullable(),
             // tonight banner photo (web)
             Image::make('Tonight Banner (Web-3350px × 350px)', 'web_tonight_banner_photo_path')
             ->squared()
@@ -173,7 +174,6 @@ class Docufilm extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
             // tonight banner photo (mobile)
             Image::make('Tonight Banner (Mobile-780px × 564px)', 'mobile_tonight_banner_photo_path')
             ->squared()
@@ -192,6 +192,7 @@ class Docufilm extends Resource
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
 
+            Text::make('Tonight Banner Alt', 'tonight_banner_alt')->rules('max:255')->nullable(),
             // genres
             BelongsToMany::make('Genres', 'genres'),
             // countries
