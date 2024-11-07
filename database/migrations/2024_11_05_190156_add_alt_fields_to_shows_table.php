@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tonight_banner_alt')->nullable()->after('mobile_tonight_banner_photo_path');
             $table->string('banner_alt')->nullable()->after('banner_path');
             $table->string('image_alt')->nullable()->after('cover_photo_path');
+            $table->string('cover_photo_alt')->nullable()->after('cover_photo_path');
         });
     }
 
