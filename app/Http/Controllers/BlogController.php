@@ -35,7 +35,7 @@ class BlogController extends Controller
             }
         }
 
-        $blogs = $blogModel->select('id', 'title', 'slug', 'blog_type_id', 'cover_photo_path', 'created_at')->orderBy('created_at', 'desc')->get();
+        $blogs = $blogModel->select('id', 'title', 'slug', 'blog_type_id', 'cover_photo_path', 'cover_photo_alt', 'created_at')->orderBy('created_at', 'desc')->get();
 
         if(count($blogs) >= 1){
             $data = [];
@@ -53,6 +53,7 @@ class BlogController extends Controller
                         $blog->cover_photo_path = null;
                     }
                     $data[$indexPos]['cover_photo_path'] = $blog->cover_photo_path;
+                    $data[$indexPos]['cover_photo_alt'] = $blog->cover_photo_alt;
                 }
 
                 $data[$indexPos]['published_at'] = date('d M Y', strtotime($blog->created_at));
@@ -67,7 +68,7 @@ class BlogController extends Controller
     }
 
     public function getBlog(Request $req){
-        $blog = Blog::select('id', 'title', 'slogan', 'slug', 'blog_type_id', 'content', 'facebook_link_url', 'banner_path', 'created_at', 'description', 'meta_title', 'meta_description')
+        $blog = Blog::select('id', 'title', 'slogan', 'slug', 'blog_type_id', 'content', 'facebook_link_url', 'banner_path', 'banner_alt', 'created_at', 'description', 'meta_title', 'meta_description')
         ->where('slug', $req->slug)
         ->first();
 
@@ -84,6 +85,7 @@ class BlogController extends Controller
             $data['description'] = $blog->description;
             $data['meta_title'] = $blog->meta_title;
             $data['meta_description'] = $blog->meta_description;
+            $data['banner_alt'] = $blog->banner_alt;
             if($blog->banner_path){
                 if(Storage::disk('public')->exists($blog->banner_path)){
                     $blog->banner_path = Storage::url($blog->banner_path);

@@ -85,7 +85,7 @@ class Blog extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Cover Photo Alt', 'cover_photo_alt')->sortable()->nullable(),
             // banner
             Image::make('Banner (1280px x 720px)', 'banner_path')
             ->squared()
@@ -103,7 +103,7 @@ class Blog extends Resource
             })
             ->prunable()
             ->acceptedTypes('image/jpeg,image/png'),
-
+            Text::make('Banner Alt', 'banner_alt')->sortable()->nullable(),
             BelongsTo::make('Blog Type', 'blogType')->rules('required'),
             // is archived?
             //Boolean::make('Archive This?', 'is_archived'),
