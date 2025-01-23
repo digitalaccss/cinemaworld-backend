@@ -43,6 +43,7 @@ class Instalment extends Model implements HasMedia
     'director_statement',
     'cover_photo_path',
     'banner_path',
+    'cover_photo_alt',
     'director_photo_path',
     'leader_board_banner_path',
     'expiry_date',
