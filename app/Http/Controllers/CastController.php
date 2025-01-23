@@ -15,10 +15,12 @@ use App\Models\Instalment;
 class CastController extends Controller
 {
     public function getCast(Request $req){
-        $cast = Cast::select('id', 'name', 'slug', 'description', 'profile_photo_path', 'profile_photo_alt')
-        ->where('slug', $req->slug)
+        // $cast = Cast::select('id', 'name', 'slug', 'description', 'profile_photo_path')
+        // ->where('slug', $req->slug)
+        // ->first();
+        $cast = Cast::where('slug', $req->slug)
         ->first();
-
+      
         if($cast){
 
             $data = [];
@@ -42,8 +44,7 @@ class CastController extends Controller
 
             $showIDs = ShowCast::where('cast_id', $cast->id)->pluck('show_id');
             if(count($showIDs) >= 1){
-                $showsArr = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'profile_photo_path' )
-                ->whereIn('id', $showIDs)
+                $showsArr = Show::whereIn('id', $showIDs)
                 ->where('is_publish', true)
                 ->get();
                 
