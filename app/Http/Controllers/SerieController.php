@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log; 
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Show;
@@ -242,8 +243,7 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalments = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'full_desc', 'short_desc', 'trailer_link_url', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'cover_photo_alt', 'banner_alt', 'tonight_banner_alt')
-            ->where('series_id', $series->id)
+            $instalments = Instalment::where('series_id', $series->id)
             ->where('is_publish', true)
             ->orderBy('instalment_number', 'ASC')
             ->get();
@@ -325,6 +325,7 @@ class SerieController extends Controller
             // else {
             //     return response()->json('No instalments are available at the moment', 202);
             // }
+
             return response()->json($data, 200);
         }
         else {
@@ -432,8 +433,7 @@ class SerieController extends Controller
                 }   
             }
 
-            $instalment = Instalment::select('id', 'title', 'foreign_title', 'slug', 'instalment_number', 'release_year', 'runtime', 'short_desc', 'full_desc', 'trivia_desc', 'trailer_link_url', 'banner_path', 'cover_photo_path', 'is_new', 'on_demand', 'sub_title', 'expiry_date', 'meta_title', 'meta_description', 'cover_photo_alt', 'banner_alt', 'tonight_banner_alt')
-            ->where('series_id', $series->id)
+            $instalment = Instalment::where('series_id', $series->id)
             ->where('slug', $req->slug)
             ->where('is_publish', true)
             ->orderBy('instalment_number', 'ASC')
@@ -591,7 +591,7 @@ class SerieController extends Controller
 
                     $data['instalment']['next_play'] = $nextScheduleDate.' at '.$nextScheduleTime;
                 }
-
+               
                 return response()->json($data, 200);
             }
             else {
