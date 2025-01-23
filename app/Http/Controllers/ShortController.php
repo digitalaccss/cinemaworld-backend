@@ -170,7 +170,7 @@ class ShortController extends Controller
 
             $accoladeIDs = ShowAccolade::where('show_id', $short->id)->pluck('accolade_id');
             if(count($accoladeIDs) >= 1){
-                $accolades = Accolade::select('name', 'category', 'cover_photo_path')->whereIn('id', $accoladeIDs)->get();
+                $accolades = Accolade::select('name', 'category', 'cover_photo_path', 'cover_photo_alt')->whereIn('id', $accoladeIDs)->get();
                 foreach($accolades as $accolade){
                     if($accolade->cover_photo_path){
                         if(Storage::disk('public')->exists($accolade->cover_photo_path)){
@@ -191,7 +191,7 @@ class ShortController extends Controller
 
             $directorIDs = ShowDirector::where('show_id', $short->id)->pluck('director_id');
             if(count($directorIDs) >= 1){
-                $directors = Director::select('id', 'name', 'slug', 'profile_photo_path')->whereIn('id', $directorIDs)->get();
+                $directors = Director::select('id', 'name', 'slug', 'profile_photo_path', 'profile_photo_alt')->whereIn('id', $directorIDs)->get();
                 foreach($directors as $director){
                     $director->slug = '/directors/'.$director->slug;
                     if($director->profile_photo_path){
@@ -208,7 +208,7 @@ class ShortController extends Controller
 
             $castIDs = ShowCast::where('show_id', $short->id)->pluck('cast_id');
             if(count($castIDs) >= 1){
-                $castArr = Cast::select('id', 'name', 'slug', 'profile_photo_path')->whereIn('id', $castIDs)->get();
+                $castArr = Cast::select('id', 'name', 'slug', 'profile_photo_path', 'profile_photo_alt')->whereIn('id', $castIDs)->get();
 
                 foreach($castArr as $cast){
                     $cast->slug = '/casts/'.$cast->slug;
@@ -259,7 +259,7 @@ class ShortController extends Controller
             if($genreIDs){
                 $showsWithSameGenres = ShowGenre::whereIn('genre_id', $genreIDs)->pluck('show_id');
                 if(count($showsWithSameGenres) >= 1){
-                    $youMayAlsoLikes = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'is_new', 'is_publish')
+                    $youMayAlsoLikes = Show::select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'cover_photo_path', 'cover_photo_alt', 'is_new', 'is_publish')
                     ->where('show_type_id', 4)
                     ->whereNot('id', $short->id)
                     ->where('is_publish', true)
