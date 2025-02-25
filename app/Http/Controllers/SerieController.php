@@ -62,12 +62,12 @@ class SerieController extends Controller
         }
 
         if($perpage == null){
-            $seriesArr = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title')
+            $seriesArr = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'created_at')
             ->where('show_type_id', 2)
             ->where('is_publish', true)
             ->get();
         }else{
-            $seriesArr = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title')
+            $seriesArr = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'created_at')
             ->where('show_type_id', 2)
             ->where('is_publish', true)
             ->paginate($perpage);
@@ -86,7 +86,7 @@ class SerieController extends Controller
                 $data[$indexPos]['show_type'] = ShowType::where('id', $series->show_type_id)->value('show_type');
                 $data[$indexPos]['trailer_link_url'] = $series->trailer_link_url;
                 $data[$indexPos]['is_new'] = $series->is_new;
-
+                $data[$indexPos]['created_at'] = $series->created_at;
                 $genreIDs = ShowGenre::where('show_id', $series->id)->pluck('genre_id');
                 if(count($genreIDs) >= 1){
                     $genres = Genre::whereIn('id', $genreIDs)->pluck('genre_display_name');

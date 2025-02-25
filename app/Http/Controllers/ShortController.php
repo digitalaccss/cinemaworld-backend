@@ -69,12 +69,12 @@ class ShortController extends Controller
         }
 
         if($perpage == null){
-            $shorts = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $shorts = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 4)
             ->where('is_publish', true)
             ->get();
         }else{
-            $shorts = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $shorts = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 4)
             ->where('is_publish', true)
             ->paginate($perpage);
@@ -94,7 +94,7 @@ class ShortController extends Controller
                 $data[$indexPos]['show_type'] = ShowType::where('id', $short->show_type_id)->value('show_type');
                 $data[$indexPos]['trailer_link_url'] = $short->trailer_link_url;
                 $data[$indexPos]['is_new'] = $short->is_new;
-
+                $data[$indexPos]['created_at'] = $short->created_at;
                 $genreIDs = ShowGenre::where('show_id', $short->id)->pluck('genre_id');
                 if(count($genreIDs) >= 1){
                     $genres = Genre::whereIn('id', $genreIDs)->pluck('genre_display_name');

@@ -67,12 +67,12 @@ class FilmController extends Controller
         }
 
         if($perpage == null){
-            $films = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $films = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 1)
             ->where('is_publish', true)
             ->get();
         }else{
-            $films = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $films = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 1)
             ->where('is_publish', true)
             ->paginate($perpage);
@@ -96,6 +96,7 @@ class FilmController extends Controller
                 $data[$indexPos]['tonight_banner_alt'] = $film->tonight_banner_alt;
                 $data[$indexPos]['banner_alt'] = $film->banner_alt;
                 $data[$indexPos]['image_alt'] = $film->image_alt;
+                $data[$indexPos]['created_at'] = $film->created_at;
                 $data[$indexPos]['director_statement_alt'] = $film->director_statement_alt;
         
                 $genreIDs = ShowGenre::where('show_id', $film->id)->pluck('genre_id');

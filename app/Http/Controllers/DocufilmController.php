@@ -66,12 +66,12 @@ class DocufilmController extends Controller
         }
 
         if($perpage == null){
-            $docuFilms = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $docuFilms = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 3)
             ->where('is_publish', true)
             ->get();
         }else{
-            $docuFilms = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date')
+            $docuFilms = $showModel->select('id', 'title', 'foreign_title', 'slug', 'show_type_id', 'trailer_link_url', 'cover_photo_path', 'is_new', 'sub_title', 'expiry_date', 'created_at')
             ->where('show_type_id', 3)
             ->where('is_publish', true)
             ->paginate($perpage);
@@ -92,7 +92,7 @@ class DocufilmController extends Controller
                 $data[$indexPos]['sub_title'] = $docuFilm->sub_title;
                 $data[$indexPos]['expiry_date'] = ($docuFilm->expiry_date == null)? null : $docuFilm->expiry_date->format('Y-m-d');
                 $data[$indexPos]['is_new'] = $docuFilm->is_new;
-                
+                $data[$indexPos]['created_at'] = $docuFilm->created_at;
                 $genreIDs = ShowGenre::where('show_id', $docuFilm->id)->pluck('genre_id');
                 if(count($genreIDs) >= 1){
                     $genres = Genre::whereIn('id', $genreIDs)->pluck('genre_display_name');

@@ -57,6 +57,7 @@ class BlogController extends Controller
                 }
 
                 $data[$indexPos]['published_at'] = date('d M Y', strtotime($blog->created_at));
+                $data[$indexPos]['created_at'] = $blog->created_at->toIso8601String();
             }
 
             return response()->json($data, 200);
