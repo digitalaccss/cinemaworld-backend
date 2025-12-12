@@ -1,0 +1,24 @@
+# Ignore dependencies
+/vendor/
+node_modules/
+
+# Ignore logs
+npm-debug.log
+yarn-error.log
+
+# Ignore testing folder
+testing
+
+# Ignore all files in public/vendor directory
+public/vendor/
+
+# Ignore Composer files
+composer.json
+/vendor
+/node_modules
+/public/storage
+/storage/logs
+/storage/framework/cache
+/storage/framework/views
+/storage/framework/sessions
+.env
