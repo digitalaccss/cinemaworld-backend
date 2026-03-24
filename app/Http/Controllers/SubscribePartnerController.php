@@ -44,7 +44,7 @@ class SubscribePartnerController extends Controller
             }
         }
             
-        $subscribePartners = $subscribePartnerModel->select('id', 'partner', 'country_id', 'link_url', 'pay_tv', 'streaming')->orderBy('partner')->get();
+        $subscribePartners = $subscribePartnerModel->select('id', 'partner', 'country_id', 'link_url', 'pay_tv', 'streaming', 'logo_path')->orderBy('partner')->get();
 
         if($subscribePartners){
             foreach($subscribePartners as $indexPos => $subscribePartner){
@@ -56,6 +56,7 @@ class SubscribePartnerController extends Controller
                 $data['partners'][$indexPos]['link_url'] = $subscribePartner->link_url;
                 $data['partners'][$indexPos]['pay_tv'] = $subscribePartner->pay_tv;
                 $data['partners'][$indexPos]['streaming'] = $subscribePartner->streaming;
+                $data['partners'][$indexPos]['logo_path'] = $subscribePartner->logo_path;
             }
 
             return response()->json($data, 200);

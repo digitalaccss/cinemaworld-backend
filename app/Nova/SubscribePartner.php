@@ -8,7 +8,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Support\Facades\Storage;
 
 use App\Nova\Country;
 
@@ -56,6 +58,22 @@ class SubscribePartner extends Resource
             Text::make('Link', 'link_url')->sortable()->rules('required', 'max:255', 'active_url'),
             Boolean::make('Pay TV', 'pay_tv'),
             Boolean::make('Streaming', 'streaming'),
+            Image::make('Logo', 'logo_path')
+                ->squared()
+                ->maxWidth(150)
+                ->disk('public')
+                ->path('img/subscribe-partner-logos')
+                ->storeAs(function (Request $request) {
+                    $originalFileName = $request->logo_path->getClientOriginalName();
+                    $newFileName = $this->id . '-' . str_replace(' ', '-', strtolower($originalFileName));
+                    if (Storage::disk('public')->exists('img/subscribe-partner-logos/' . $newFileName)) {
+                        $newFileName = $this->id . '-2-' . str_replace(' ', '-', strtolower($originalFileName));
+                    }
+                    return $newFileName;
+                })
+                ->prunable()
+                ->nullable()
+                ->acceptedTypes('image/jpeg,image/png,image/svg+xml,image/webp'),
         ];
     }
 
