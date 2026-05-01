@@ -57,6 +57,17 @@ class Instalment extends Model implements HasMedia
     'meta_description'
 ];
 
+    /**
+     * Set the slug attribute to always be lowercase
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = strtolower($value);
+    }
+
     // each instalment can have 1 series
     public function series(){
         return $this->belongsTo(Show::class);

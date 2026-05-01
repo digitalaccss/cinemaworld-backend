@@ -80,6 +80,17 @@ class Show extends Model implements HasMedia
     'image_alt'
 ];
 
+    /**
+     * Set the slug attribute to always be lowercase
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = strtolower($value);
+    }
+
     // public function test($value){
     //     $test = [];
     //     foreach($value as $v){
@@ -165,21 +176,17 @@ class Show extends Model implements HasMedia
         return 'shows_index';
     }
 
-    // define searchable columns of model (not working)
-    // public function toSearchableArray()
-    // {
-    //     $array = $this->toArray();
- 
-    //     $data = [
-    //         'id' => $array['id'],
-    //         'title' => $array['title'],
-    //         'slug' => $array['slug'],
-    //         'show_type_id' => $array['show_type_id'],
-    //         'trailer_link_url' => $array['trailer_link_url'],
-    //     ];
- 
-    //     return $data;
-    // }
+    public function toSearchableArray()
+    {
+        return [
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'foreign_title' => $this->foreign_title,
+            'is_publish'    => (int) $this->is_publish,
+            'genre_names'   => $this->genres()->pluck('genre_display_name')->filter()->implode(' '),
+            'tag_names'     => $this->tags()->pluck('tag_display_name')->filter()->implode(' '),
+        ];
+    }
     
     public function registerMediaCollections(): void
     {

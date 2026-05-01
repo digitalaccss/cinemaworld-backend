@@ -22,7 +22,7 @@ return [
 
     // license key is for production use
 
-    'license_key' => env('NOVA_LICENSE_KEY', 'LYGujL4XFTuTi0iJDxPx8Gw9o76UExF3MymPlYiKZux9UAlBB1'),
+    'license_key' => env('NOVA_LICENSE_KEY', 'rqY0EGMrwSq6b1pF7LewsYYbrxylXpRt8J9GKSpNBUD2s2ep2D'),
 
     /*
     |--------------------------------------------------------------------------
