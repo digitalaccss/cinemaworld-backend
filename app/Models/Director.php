@@ -21,6 +21,17 @@ class Director extends Model
 
     protected $table = 'directors';
 
+    /**
+     * Set the slug attribute to always be lowercase
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = strtolower($value);
+    }
+
     // each director can have many shows
     public function shows(){
         return $this->belongsToMany(Show::class, 'show_director');

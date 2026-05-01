@@ -15,6 +15,17 @@ class Campaign extends Model
         'content' => 'json',
     ];
 
+    /**
+     * Set the slug attribute to always be lowercase
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = strtolower($value);
+    }
+
     // each campaign can have 1 carousel
     public function carousel(){
         return $this->belongsTo(Carousel::class);

@@ -18,6 +18,17 @@ class Blog extends Model
         // 'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    /**
+     * Set the slug attribute to always be lowercase
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = strtolower($value);
+    }
+
     public function blogType()
     {
         //return $this->belongsTo(blogType::class);

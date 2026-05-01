@@ -71,6 +71,7 @@ Route::controller(SearchController::class)->group(function(){
     Route::get('/search', 'search'); // use laravel scout and meili search engine?
 });
 
+
 // filter all films, series, shorts according to its category e.g. region, countries, genres, languages
 Route::controller(FilterController::class)->group(function(){
     Route::get('/filters', 'getAllFilters');
