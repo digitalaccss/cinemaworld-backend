@@ -28,59 +28,30 @@ class SearchController extends Controller
             $ifMatchIsFound = false;
 
             $showsResults = Show::search($searchStr, function (Indexes $meilisearch, $queryStr, $options){
-                // for searchable attributes
-                $options['attributesToRetrieve'] = ['id', 'title'];
-
-                // filter
-                $meilisearch->updateFilterableAttributes(['is_publish']);
+                // filter published shows only
                 $options['filter'] = "is_publish = true OR is_publish = 1";
 
-                // search in the title column
-                $meilisearch->updateSearchableAttributes(['title', 'foreign_title']);
-
-                // return response as the specified attributes in the object
-                // $meilisearch->updateDisplayedAttributes(['id', 'title', 'slug', 'show_type_id', 'trailer_link_url']);
+                // search across title, foreign title, genres, and tags
+                // (searchable attributes are configured via search:setup — no override needed here)
 
                 return $meilisearch->search($queryStr, $options);
 
             })->get();
 
             $instalmentResults = Instalment::search($searchStr, function (Indexes $meilisearch, $queryStr, $options){
-                // for searchable attributes
-                $options['attributesToRetrieve'] = ['id', 'title'];
-
-                // filter
-                $meilisearch->updateFilterableAttributes(['is_publish']);
+                // filter published instalments only
                 $options['filter'] = "is_publish = true";
-
-                // search in the title column
-                $meilisearch->updateSearchableAttributes(['title', 'foreign_title']);
-
-                // return response as the specified attributes in the object
-                // $meilisearch->updateDisplayedAttributes(['id', 'title', 'slug', 'show_type_id', 'trailer_link_url']);
 
                 return $meilisearch->search($queryStr, $options);
 
             })->get();
 
             $castResults = Cast::search($searchStr, function (Indexes $meilisearch, $queryStr, $options){
-                // for searchable attributes
-                $options['attributesToRetrieve'] = ['id', 'name'];
-
-                $meilisearch->updateSearchableAttributes(['name']);
-
                 return $meilisearch->search($queryStr, $options);
-
             })->get();
 
             $directorResults = Director::search($searchStr, function (Indexes $meilisearch, $queryStr, $options){
-                // for searchable attributes
-                $options['attributesToRetrieve'] = ['id', 'name'];
-
-                $meilisearch->updateSearchableAttributes(['name']);
-
                 return $meilisearch->search($queryStr, $options);
-
             })->get();
     
             if(count($showsResults) >= 1){
