@@ -32,6 +32,38 @@ class Director extends Model
         $this->attributes['slug'] = strtolower($value);
     }
 
+    /**
+     * Get the effective meta title (manual or auto-generated).
+     *
+     * @return string
+     */
+    public function getEffectiveMetaTitleAttribute()
+    {
+        if (!empty($this->meta_title)) {
+            return $this->meta_title;
+        }
+
+        return $this->name . ' | CinemaWorld';
+    }
+
+    /**
+     * Get the effective meta description (manual or auto-generated).
+     *
+     * @return string
+     */
+    public function getEffectiveMetaDescriptionAttribute()
+    {
+        if (!empty($this->meta_description)) {
+            return $this->meta_description;
+        }
+
+        if (!empty($this->description)) {
+            return \Illuminate\Support\Str::limit(strip_tags($this->description), 155);
+        }
+
+        return 'Discover films and shows directed by ' . $this->name . ' on CinemaWorld.';
+    }
+
     // each director can have many shows
     public function shows(){
         return $this->belongsToMany(Show::class, 'show_director');

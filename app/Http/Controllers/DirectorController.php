@@ -15,7 +15,7 @@ use App\Models\InstalmentDirector;
 class DirectorController extends Controller
 {
     public function getDirector(Request $req){
-        $director = Director::select('id', 'name', 'slug', 'description', 'profile_photo_path', 'profile_photo_alt')
+        $director = Director::select('id', 'name', 'slug', 'description', 'profile_photo_path', 'profile_photo_alt', 'meta_title', 'meta_description')
         ->where('slug', $req->slug)
         ->first();
 
@@ -29,6 +29,8 @@ class DirectorController extends Controller
             $data['title'] = 'Director';
             $data['description'] = $director->description;
             $data['profile_photo_alt'] = $director->profile_photo_alt;
+            $data['meta_title'] = $director->effective_meta_title;
+            $data['meta_description'] = $director->effective_meta_description;
             if($director->profile_photo_path){
                 if(Storage::disk('public')->exists($director->profile_photo_path)){
                     $data['profile_photo_path'] = Storage::url($director->profile_photo_path);
