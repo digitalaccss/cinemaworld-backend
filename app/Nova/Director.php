@@ -80,7 +80,11 @@ class Director extends Resource
             Text::make('Created At', 'created_at', function($dateTimeStr){
                 $timestamp = strtotime($dateTimeStr);
                 return date("Y-m-d H:i:s", $timestamp);
-            })->sortable()->onlyOnIndex()
+            })->sortable()->onlyOnIndex(),
+            Text::make('Meta Title', 'meta_title')->sortable()->rules('max:70')
+                ->help('Leave blank to auto-generate: "[Director Name] | CinemaWorld"'),
+            Textarea::make('Meta Description', 'meta_description')->rules('max:165')->nullable()->sortable()
+                ->help('Leave blank to auto-generate from the director description.'),
         ];
     }
 
