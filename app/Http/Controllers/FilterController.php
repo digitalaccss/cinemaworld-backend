@@ -8,33 +8,49 @@ use App\Models\Region;
 use App\Models\Country;
 use App\Models\Genre;
 use App\Models\Language;
+use App\Models\Show;
+use App\Models\ShowType;
 use App\Models\Tag;
 use Illuminate\Support\Collection;
 
 class FilterController extends Controller
 {
+    /**
+     * Resolve the show_type_id from the show_type parameter.
+     * Accepts: "Films", "Series", "Shorts", "Documentaries" (case-insensitive)
+     */
+    private function resolveShowTypeId(Request $req)
+    {
+        if (!$req->has('show_type')) {
+            return null;
+        }
+
+        $showType = ShowType::where('show_type', $req->show_type)->first();
+        return $showType ? $showType->id : null;
+    }
+
     public function getAllFilters(Request $req){
         if($req->has('category')){
+            $showTypeId = $this->resolveShowTypeId($req);
+
             switch($req->category){
                 case 'region':
-                    //$regions = Region::select('id', 'region_display_name', 'region_name')->get();
+                    if ($showTypeId) {
+                        // Only return regions that have at least one published show of this type
+                        $regions = Region::select('regions.id', 'regions.region_display_name', 'regions.region_name')
+                            ->whereHas('shows', function ($query) use ($showTypeId) {
+                                $query->where('show_type_id', $showTypeId)
+                                      ->where('is_publish', true);
+                            })
+                            ->orderBy('region_display_name')
+                            ->get();
+                    } else {
+                        $regions = Region::select('id', 'region_display_name', 'region_name')->orderBy('region_display_name')->get();
+                    }
 
-                    //$sortedRegions = Region::select('id', 'region_display_name', 'region_name')->where('region_name', '!=', 'AllRegions')->orderBy('region_display_name')->get();
-                    $regions = Region::select('id', 'region_display_name', 'region_name')->orderBy('region_display_name')->get();
-                    // $regions = Region::select('id', 'region_display_name', 'region_name')->where('id', '=', 1)->get();
                     $allRegionsData = Collection::make(['id'=>1, 'region_display_name' => 'All Regions', 'region_name' => 'AllRegions']);
-
-                    // put all region to the first row 
                     $regions->prepend($allRegionsData);
 
-                    // if($sortedRegions){
-                    //     foreach($sortedRegions as $region){
-                    //         //$regions->push($region);
-                    //         $regions->id->push($region->id);
-                    //     }
-                    // }
-
-                    //if(count($regions) >= 1){
                     if($regions){
                         return response()->json($regions, 200);
                     }
@@ -43,22 +59,22 @@ class FilterController extends Controller
                     }
                     break;
                 case 'country':
-                    //$countries = Country::select('id', 'country_display_name', 'country_name')->get();
-
-                    //$sortedCountries = Country::select('id', 'country_display_name', 'country_name')->where('country_name', '!=', 'AllCountries')->orderBy('country_display_name')->get();
-
-                    $countries = Country::select('id', 'country_display_name', 'country_name')->orderBy('country_display_name')->get();
-
-                    // if($sortedCountries){
-                    //     foreach($sortedCountries as $country){
-                    //         $countries->push($country);
-                    //     }
-                    // }
+                    if ($showTypeId) {
+                        // Only return countries that have at least one published show of this type
+                        $countries = Country::select('countries.id', 'countries.country_display_name', 'countries.country_name')
+                            ->whereHas('shows', function ($query) use ($showTypeId) {
+                                $query->where('show_type_id', $showTypeId)
+                                      ->where('is_publish', true);
+                            })
+                            ->orderBy('country_display_name')
+                            ->get();
+                    } else {
+                        $countries = Country::select('id', 'country_display_name', 'country_name')->orderBy('country_display_name')->get();
+                    }
 
                     $allCountriesData = Collection::make(['id'=>1, 'country_display_name' => 'All Countries', 'country_name' => 'AllCountries']);
                     $countries->prepend($allCountriesData);
 
-                    //if(count($countries) >= 1){
                     if($countries){
                         return response()->json($countries, 200);
                     }
@@ -67,7 +83,18 @@ class FilterController extends Controller
                     }
                     break;
                 case 'genre':
-                    $genres = Genre::select('id', 'genre_display_name', 'genre_name')->orderBy('genre_display_name')->get();
+                    if ($showTypeId) {
+                        // Only return genres that have at least one published show of this type
+                        $genres = Genre::select('genres.id', 'genres.genre_display_name', 'genres.genre_name')
+                            ->whereHas('films', function ($query) use ($showTypeId) {
+                                $query->where('show_type_id', $showTypeId)
+                                      ->where('is_publish', true);
+                            })
+                            ->orderBy('genre_display_name')
+                            ->get();
+                    } else {
+                        $genres = Genre::select('id', 'genre_display_name', 'genre_name')->orderBy('genre_display_name')->get();
+                    }
 
                     $allGenresData = Collection::make(['id'=>1, 'genre_display_name' => 'All Genres', 'genre_name' => 'AllGenres']);
                     $genres->prepend($allGenresData);
@@ -80,9 +107,18 @@ class FilterController extends Controller
                     }
                     break;
                 case 'language':
-                    //$sortedLanguages = Language::select('id', 'language_display_name', 'language_name')->where('language_name', '!=', 'AllLanguages')->orderBy('language_display_name')->get();
-
-                    $languages = Language::select('id', 'language_display_name', 'language_name')->orderBy('language_display_name')->get();
+                    if ($showTypeId) {
+                        // Only return languages that have at least one published show of this type
+                        $languages = Language::select('languages.id', 'languages.language_display_name', 'languages.language_name')
+                            ->whereHas('shows', function ($query) use ($showTypeId) {
+                                $query->where('show_type_id', $showTypeId)
+                                      ->where('is_publish', true);
+                            })
+                            ->orderBy('language_display_name')
+                            ->get();
+                    } else {
+                        $languages = Language::select('id', 'language_display_name', 'language_name')->orderBy('language_display_name')->get();
+                    }
 
                     $allLanguagesData = Collection::make(['id'=>1, 'language_display_name' => 'All Languages', 'language_name' => 'AllLanguages']);
                     $languages->prepend($allLanguagesData);
