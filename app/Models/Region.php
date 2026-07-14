@@ -29,4 +29,10 @@ class Region extends Model
         // looking for region id column in film table
         return $this->hasOne(Show::class, 'region_id');
     }
+
+    // each region can have many shows
+    public function shows()
+    {
+        return $this->hasMany(Show::class, 'region_id');
+    }
 }
